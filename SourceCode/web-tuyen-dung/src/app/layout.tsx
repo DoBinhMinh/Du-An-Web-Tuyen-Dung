@@ -1,13 +1,12 @@
-
 import type { Metadata } from "next";
 import "./globals.css";
-import { Header } from "./components/header/Header";
+import { Header } from "./components/Header/Header"
 import { Footer } from "./components/footer/Footer";
 
 
 export const metadata: Metadata = {
-  title: "web-tuyen-dung",
-  description: "Website tuyển dụng",
+  title: "Dự án 3",
+  description: "website tuyển dụng it tại Việt Nam",
 };
 
 export default function RootLayout({
