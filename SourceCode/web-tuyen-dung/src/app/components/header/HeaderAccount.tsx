@@ -5,16 +5,16 @@ export const HeaderACCount = () => {
     <>
       <div className="font-[600] sm:text-[16px] text-[12px] text-white inline-flex gap-x-[5px] relative group/sub-1">
         {/* Chưa đăng nhập */}
-        {/* <Link href="#" className="">
+        <Link href="/user/login" className="">
           Đăng nhập
         </Link>
         <span className="">/</span>
-        <Link href="#" className="">
+        <Link href="/user/register" className="">
           Đăng Ký
-        </Link> */}
+        </Link>
 
         {/* đã đăng nhập */}
-        <Link href="#">
+        {/* <Link href="#">
           Menu...
         </Link>
         <ul className="bg-[#000065] lg:absolute relative lg:top-[100%] top-[0] right-0 left-0 lg:w-[200px] w-full rounded-[4px] hidden group-hover/sub-1:block">
@@ -38,7 +38,7 @@ export const HeaderACCount = () => {
               Đăng xuất
             </Link>
           </li>
-        </ul>
+        </ul> */}
       </div>
     </>
   )
