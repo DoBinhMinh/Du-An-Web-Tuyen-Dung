@@ -132,6 +132,7 @@ export const listCV = async (req: AccountRequest, res: Response) => {
           jobPosition: jobDetail.position,
           jobWorkingForm: jobDetail.workingForm,
           status: item.status,
+          fileCV: item.fileCV,   // <-- thêm dòng này
         };
 
         dataFinal.push(itemFinal);
@@ -149,5 +150,34 @@ export const listCV = async (req: AccountRequest, res: Response) => {
       code: "error",
       message: "Dữ liệu không hợp lệ!"
     })
+  }
+}
+export const deleteCV = async (req: AccountRequest, res: Response) => {
+  try {
+    const id = req.params.id;
+    const email = req.account.email;
+
+    const cv = await CV.findOne({ _id: id, email: email });
+
+    if(!cv) {
+      res.json({
+        code: "error",
+        message: "Không tìm thấy CV!"
+      });
+      return;
+    }
+
+    await CV.deleteOne({ _id: id });
+
+    res.json({
+      code: "success",
+      message: "Đã xóa CV thành công!"
+    });
+  } catch (error) {
+    console.log(error);
+    res.json({
+      code: "error",
+      message: "Dữ liệu không hợp lệ!"
+    });
   }
 }
