@@ -6,7 +6,7 @@ import * as jobValidate from "../validates/job.validate";
 
 const router = Router();
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage: multer.memoryStorage() });
 
 router.get("/detail/:id", jobController.detail)
 

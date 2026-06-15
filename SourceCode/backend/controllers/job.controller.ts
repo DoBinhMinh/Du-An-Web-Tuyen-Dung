@@ -64,22 +64,34 @@ export const detail = async (req: Request, res: Response) => {
   }
 }
 
+import { v2 as cloudinary } from "cloudinary";
+import { Readable } from "stream";
+
 export const applyPost = async (req: Request, res: Response) => {
   try {
-    req.body.fileCV = req.file ? req.file.path : "";
+    let fileCVUrl = "";
 
+    if (req.file) {
+      const uploadResult = await new Promise<string>((resolve, reject) => {
+        const uploadStream = cloudinary.uploader.upload_stream(
+          { resource_type: "raw", folder: "cvs", format: "pdf" },
+          (error, result) => {
+            if (error) reject(error);
+            else resolve(result!.secure_url);
+          }
+        );
+        Readable.from(req.file!.buffer).pipe(uploadStream);
+      });
+      fileCVUrl = uploadResult;
+    }
+
+    req.body.fileCV = fileCVUrl;
     const newRecord = new CV(req.body);
     await newRecord.save();
 
-    res.json({
-      code: "success",
-      message: "Đã gửi CV thành công!"
-    });
+    res.json({ code: "success", message: "Đã gửi CV thành công!" });
   } catch (error) {
     console.log(error);
-    res.json({
-      code: "success",
-      message: "Dữ liệu không hợp lệ!"
-    });
+    res.json({ code: "error", message: "Dữ liệu không hợp lệ!" });
   }
-}
+};

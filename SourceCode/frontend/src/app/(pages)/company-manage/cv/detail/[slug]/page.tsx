@@ -74,7 +74,7 @@ export default async function CompanyManageCVDetailPage({ params }: {
             </div>
             <div className="bg-[#D9D9D9] h-[736px]">
               {/* Preview File CV dạng PDF tại đây */}
-              <iframe src={cvDetail.fileCV} className="w-full h-full" allowFullScreen></iframe>
+              <iframe src={`https://docs.google.com/viewer?url=${encodeURIComponent(cvDetail.fileCV)}&embedded=true`} className="w-full h-full" allowFullScreen></iframe>
             </div>
           </div>
           {/* Hết Thông tin CV */}

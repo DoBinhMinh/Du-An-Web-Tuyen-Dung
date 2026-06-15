@@ -8,18 +8,18 @@ export const search = async (req: Request, res: Response) => {
   let totalPage = 0;
   let totalRecord = 0;
 
-  if(Object.keys(req.query).length > 0) {
+  if (Object.keys(req.query).length > 0) {
     const find: any = {};
 
-    if(req.query.language) {
+    if (req.query.language) {
       find.technologies = req.query.language;
     }
 
-    if(req.query.city) {
+    if (req.query.city) {
       const city = await City.findOne({
         name: req.query.city
       })
-      if(city) {
+      if (city) {
         const listCompanyInCity = await AccountCompany.find({
           city: city.id
         })
@@ -28,35 +28,38 @@ export const search = async (req: Request, res: Response) => {
       }
     }
 
-    if(req.query.company) {
+    if (req.query.company) {
       const company = await AccountCompany.findOne({
         companyName: req.query.company
       })
       find.companyId = company?.id;
     }
 
-    if(req.query.keyword) {
+    if (req.query.keyword) {
       const keywordRegex = new RegExp(`${req.query.keyword}`, "i");
-      find.title = keywordRegex;
+      find.$or = [
+        { title: keywordRegex },
+        { technologies: { $elemMatch: { $regex: keywordRegex } } }
+      ];
     }
 
-    if(req.query.position) {
+    if (req.query.position) {
       find.position = req.query.position;
     }
 
-    if(req.query.workingForm) {
+    if (req.query.workingForm) {
       find.workingForm = req.query.workingForm;
     }
 
     // Phân trang
     const limitItems = 2;
     let page = 1;
-    if(req.query.page && parseInt(`${req.query.page}`) > 0) {
+    if (req.query.page && parseInt(`${req.query.page}`) > 0) {
       page = parseInt(`${req.query.page}`);
     }
     const skip = (page - 1) * limitItems;
     totalRecord = await Job.countDocuments(find);
-    totalPage = Math.ceil(totalRecord/limitItems);
+    totalPage = Math.ceil(totalRecord / limitItems);
     // Hết Phân trang
 
     const jobs = await Job
@@ -85,7 +88,7 @@ export const search = async (req: Request, res: Response) => {
         _id: item.companyId
       })
 
-      if(companyInfo) {
+      if (companyInfo) {
         itemFinal.companyLogo = `${companyInfo.logo}`;
         itemFinal.companyName = `${companyInfo.companyName}`;
 

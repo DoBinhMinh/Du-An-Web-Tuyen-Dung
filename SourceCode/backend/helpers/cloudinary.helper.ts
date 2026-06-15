@@ -8,5 +8,19 @@ cloudinary.config({
 });
 
 export const storage = new CloudinaryStorage({
-  cloudinary: cloudinary
+  cloudinary: cloudinary,
+  params: {
+    folder: "cvs",
+    resource_type: "raw",
+    format: "pdf",
+    allowed_formats: ["pdf"],
+  } as object
+});
+
+export const imageStorage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "images",
+    resource_type: "image",
+  } as object
 });
