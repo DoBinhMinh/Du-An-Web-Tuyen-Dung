@@ -9,10 +9,12 @@ export const metadata: Metadata = {
   description: "Mô tả trang chi tiết CV...",
 }
 
-export default async function CompanyManageCVDetailPage({ params }: {
-  params: {
-    slug: string
-  }
+export default async function CompanyManageCVDetailPage({
+  params,
+}: {
+  params: Promise<{
+    slug: string;
+  }>;
 }) {
   const { slug } = await params;
   const headersList = await headers(); // lấy headers từ request
