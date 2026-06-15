@@ -17,7 +17,7 @@ connectDB();
 
 // Cấu hình CORS
 app.use(cors({
-  origin: "https://du-an-web-tuyen-dung-6.onrender.com", // Phải chỉ định tên miền cụ thể
+  origin: "http://localhost:3000", // Phải chỉ định tên miền cụ thể
   credentials: true, // Cho phép gửi cookie
 }));
 
