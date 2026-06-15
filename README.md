@@ -158,6 +158,84 @@ NODE_ENV=development
 ```
 
 Lưu ý: không đưa file `.env` lên GitHub vì file này chứa thông tin bảo mật.
+### Cấu hình CORS khi chạy chương trình
+
+Để frontend gọi được API backend, cần kiểm tra cấu hình CORS trong file chạy chính của backend, thường là `index.ts` hoặc `app.ts`.
+
+Nếu chạy project ở môi trường local, frontend mặc định chạy tại:
+
+```txt
+http://localhost:3000
+```
+
+Backend cần cấu hình CORS như sau:
+
+```ts
+app.use(cors({
+  origin: "http://localhost:3000",
+  credentials: true,
+}));
+```
+
+Nếu deploy frontend lên Render hoặc một nền tảng khác, cần thay `origin` bằng đúng đường dẫn frontend đã deploy.
+
+Ví dụ frontend được deploy tại:
+
+```txt
+https://du-an-web-tuyen-dung-6.onrender.com
+```
+
+thì cấu hình CORS trong backend là:
+
+```ts
+app.use(cors({
+  origin: "https://du-an-web-tuyen-dung-6.onrender.com",
+  credentials: true,
+}));
+```
+
+Lưu ý: đường dẫn trong `origin` không được có dấu `/` ở cuối.
+
+Sai:
+
+```ts
+origin: "https://du-an-web-tuyen-dung-6.onrender.com/"
+```
+
+Đúng:
+
+```ts
+origin: "https://du-an-web-tuyen-dung-6.onrender.com"
+```
+
+Nếu muốn backend cho phép cả local và Render, có thể cấu hình như sau:
+
+```ts
+app.use(cors({
+  origin: [
+    "http://localhost:3000",
+    "https://du-an-web-tuyen-dung-6.onrender.com"
+  ],
+  credentials: true,
+}));
+```
+
+Ngoài ra, frontend cần cấu hình biến môi trường trỏ tới backend.
+
+Khi chạy local, file `.env.local` trong thư mục `frontend`:
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000
+```
+
+Khi deploy lên Render, cần sửa biến môi trường frontend thành URL backend đã deploy, ví dụ:
+
+```env
+NEXT_PUBLIC_API_URL=https://link-backend.onrender.com
+```
+
+Sau khi sửa CORS hoặc biến môi trường, cần chạy lại backend/frontend hoặc redeploy lại service trên Render để cấu hình mới có hiệu lực.
+
 
 ### 7.4. Chạy backend
 
